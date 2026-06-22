@@ -1,0 +1,35 @@
+# configs/retrieval_config.yaml
+
+bm25:
+  k1: 1.5
+  b: 0.75
+  tokenizer: "whitespace"             # or "indic" for Indian languages
+
+dense:
+  model: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  batch_size: 64
+  normalize_embeddings: true
+
+hybrid:
+  bm25_weight: 0.3
+  dense_weight: 0.7
+  fusion: "rrf"                       # Reciprocal Rank Fusion
+  rrf_k: 60
+
+index:
+  nprobe: 32                          # FAISS search probes
+  nlist: 256                          # FAISS IVF clusters
+  use_gpu: false
+
+corpus:
+  sources:
+    - name: "wikipedia_en"
+      path: "data/processed/wiki_en.jsonl"
+    - name: "wikipedia_hi"
+      path: "data/processed/wiki_hi.jsonl"
+    - name: "wikipedia_ta"
+      path: "data/processed/wiki_ta.jsonl"
+    - name: "altnews"
+      path: "data/processed/altnews.jsonl"
+  chunk_size: 200                     # words per chunk
+  chunk_overlap: 50
